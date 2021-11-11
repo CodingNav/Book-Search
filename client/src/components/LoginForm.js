@@ -28,7 +28,7 @@ const LoginForm = () => {
     }
 
     try {
-      const { data } = await saveBook({
+      const { data } = await loginUser({
         variables: { ...userFormData },
       });
 

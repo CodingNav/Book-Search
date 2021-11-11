@@ -31,7 +31,7 @@ const SignupForm = () => {
 
     try {
 
-      const { data } = await saveBook({
+      const { data } = await addUser({
         variables: { ...userFormData },
       });
 
