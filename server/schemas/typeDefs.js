@@ -1,3 +1,4 @@
+
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
@@ -31,12 +32,11 @@ const typeDefs = gql`
         addUser(username: String!, email: String!, password: String!): Auth
         login(email: String, username: String, password: String!): Auth
         saveBook(bookData: BookDataInput): User
-        deleteBook(bookId: ID!): User
-      }
+        deleteBook(bookId: String!): User
+    }
     type Auth {
         token: ID!
         user: User
     }
 `
-
 module.exports = typeDefs;
