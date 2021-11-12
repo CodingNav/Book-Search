@@ -9,8 +9,8 @@ import { removeBookId } from '../utils/localStorage';
 const SavedBooks = () => {
 
   const { loading, data } = useQuery(GET_ME);
-
-  const [userData, setUserData] = useState(data);
+  const userData = data?.me || {};
+  // const [userData, setUserData] = useState(data.me);
 
   const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
 
@@ -31,7 +31,7 @@ const SavedBooks = () => {
         throw new Error('something went wrong!');
       }
 
-      setUserData(data);
+      // setUserData(data);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
 
@@ -44,7 +44,7 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-
+  console.log(userData);
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>

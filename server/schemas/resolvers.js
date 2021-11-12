@@ -6,6 +6,7 @@ const resolvers = {
     Query: {
         // Access current user's profile
         me: async (parent, args, context) => {
+            
             if (context.user) {
                 // excludes password form User object
                 const userData = await User.findOne({ _id: context.user._id }).select('-__v -password');
@@ -30,7 +31,7 @@ const resolvers = {
                 throw new AuthenticationError('Incorrect credentials');
             }
 
-            const checkPassword = await user.checkPassword(password);
+            const checkPassword = await user.isCorrectPassword(password);
 
             if (!checkPassword) {
                 throw new AuthenticationError('Incorrect credentials');
@@ -41,18 +42,19 @@ const resolvers = {
         },
         saveBook: async (parent, { bookData }, context) => {
             if (context.user) {
-                const user = await User.updateOne(
+                const user = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $push: { savedBooks: { bookData } } },
+                    { $push: { savedBooks: bookData } },
                     { new: true }
                 );
+                console.log(user);
                 return user;
             }
             throw new AuthenticationError('User not logged in');
         },
         deleteBook: async (parent, { bookId }, context) => {
             if (context.user) {
-                const user = await User.updateOne(
+                const user = await User.findByIdAndUpdate(
                     { _id: context.user._id },
                     { $pull: { savedBooks: { bookId } } },
                     { new: true }
